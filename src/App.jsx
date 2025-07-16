@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Users, TrendingUp, TrendingDown, DollarSign, Award, User, AlertCircle, Search, Filter, ArrowUpDown, Edit, Trash2, Ban, CheckCircle, X } from 'lucide-react';
 
-const API_BASE_URL = 'http://localhost:3001/api';
+const API_BASE_URL = 'http://217.76.57.217:5173/:3001/api';
 
 // Service API avec gestion d'erreurs améliorée
 const apiService = {
