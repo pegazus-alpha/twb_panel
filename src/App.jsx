@@ -28,7 +28,7 @@ const apiService = {
   fetchCommissionsUser: (userId) => apiService.fetchWithErrorHandling(`${API_BASE_URL}/commissions/user/${userId}`),
   fetchStats: () => apiService.fetchWithErrorHandling(`${API_BASE_URL}/stats`),
   fetchHierarchy: (userId) => apiService.fetchWithErrorHandling(`${API_BASE_URL}/hierarchy/${userId}`),
-  
+
   deleteUser: (id) => apiService.fetchWithErrorHandling(`${API_BASE_URL}/utilisateurs/${id}`, { method: 'DELETE' }),
   updateUserStatus: (id, statut) => apiService.fetchWithErrorHandling(`${API_BASE_URL}/utilisateurs/${id}/statut`, {
     method: 'PATCH',
@@ -148,7 +148,7 @@ const FilterBar = ({ searchTerm, onSearchChange, sortBy, onSortChange, filterBy,
             />
           </div>
         </div>
-        
+
         <div className="flex gap-2">
           <select
             value={sortBy}
@@ -162,7 +162,7 @@ const FilterBar = ({ searchTerm, onSearchChange, sortBy, onSortChange, filterBy,
               </option>
             ))}
           </select>
-          
+
           <select
             value={filterBy}
             onChange={(e) => onFilterChange(e.target.value)}
@@ -208,12 +208,12 @@ const Dashboard = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [stats, setStats] = useState({});
-  
+
   // États pour les filtres
   const [searchTerm, setSearchTerm] = useState('');
   const [sortBy, setSortBy] = useState('');
   const [filterBy, setFilterBy] = useState('all');
-  
+
   // États pour les modales
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [editingUser, setEditingUser] = useState(null);
@@ -235,13 +235,13 @@ const Dashboard = () => {
     // Filtrage par recherche
     if (searchTerm) {
       filtered = filtered.filter(item => {
-        const searchFields = type === 'utilisateurs' 
+        const searchFields = type === 'utilisateurs'
           ? [item.nom, item.user_id, item.langue, item.adresse_wallet]
           : type === 'retraits' || type === 'depot'
-          ? [item.nom, item.username, item.user_id, item.adresse]
-          : [item.parrain_nom, item.filleul_nom, item.user_id, item.filleul_id];
-        
-        return searchFields.some(field => 
+            ? [item.nom, item.username, item.user_id, item.adresse]
+            : [item.parrain_nom, item.filleul_nom, item.user_id, item.filleul_id];
+
+        return searchFields.some(field =>
           field && field.toString().toLowerCase().includes(searchTerm.toLowerCase())
         );
       });
@@ -257,7 +257,7 @@ const Dashboard = () => {
       filtered.sort((a, b) => {
         let aValue = a[sortBy];
         let bValue = b[sortBy];
-        
+
         if (sortBy.includes('date')) {
           aValue = new Date(aValue);
           bValue = new Date(bValue);
@@ -265,7 +265,7 @@ const Dashboard = () => {
           aValue = Number(aValue) || 0;
           bValue = Number(bValue) || 0;
         }
-        
+
         if (aValue < bValue) return -1;
         if (aValue > bValue) return 1;
         return 0;
@@ -279,7 +279,7 @@ const Dashboard = () => {
   const loadData = async () => {
     setLoading(true);
     setError(null);
-    
+
     try {
       const [utilisateurs, retraits, depot, commissions, statsData] = await Promise.all([
         apiService.fetchUtilisateurs().catch(err => {
@@ -310,7 +310,7 @@ const Dashboard = () => {
         depot: depot || [],
         commissions: commissions || []
       });
-      
+
       setStats(statsData || {});
     } catch (error) {
       console.error('Erreur lors du chargement des données:', error);
@@ -347,7 +347,7 @@ const Dashboard = () => {
     } catch (error) {
       setError('Erreur lors de la mise à jour du statut');
     }
-  }; 
+  };
 
   const handleUpdateUser = async (userData) => {
     try {
@@ -395,78 +395,78 @@ const Dashboard = () => {
             <input
               type="text"
               value={formData.nom}
-              onChange={(e) => setFormData({...formData, nom: e.target.value})}
+              onChange={(e) => setFormData({ ...formData, nom: e.target.value })}
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             />
           </div>
-          
+
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">Langue</label>
             <input
               type="text"
               value={formData.langue}
-              onChange={(e) => setFormData({...formData, langue: e.target.value})}
+              onChange={(e) => setFormData({ ...formData, langue: e.target.value })}
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             />
           </div>
-          
+
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">Montant dépôt</label>
             <input
               type="number"
               step="0.01"
               value={formData.montant_depot}
-              onChange={(e) => setFormData({...formData, montant_depot: e.target.value})}
+              onChange={(e) => setFormData({ ...formData, montant_depot: e.target.value })}
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             />
           </div>
-          
+
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">Bénéfice total</label>
             <input
               type="number"
               step="0.01"
               value={formData.benefice_total}
-              onChange={(e) => setFormData({...formData, benefice_total: e.target.value})}
+              onChange={(e) => setFormData({ ...formData, benefice_total: e.target.value })}
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             />
           </div>
-          
+
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">Commissions totales</label>
             <input
               type="number"
               value={formData.commissions_totales}
-              onChange={(e) => setFormData({...formData, commissions_totales: e.target.value})}
+              onChange={(e) => setFormData({ ...formData, commissions_totales: e.target.value })}
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             />
           </div>
-          
+
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">Adresse wallet</label>
             <input
               type="text"
               value={formData.adresse_wallet}
-              onChange={(e) => setFormData({...formData, adresse_wallet: e.target.value})}
+              onChange={(e) => setFormData({ ...formData, adresse_wallet: e.target.value })}
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             />
           </div>
-          
+
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">Cycle</label>
             <input
               type="text"
               value={formData.cycle}
-              onChange={(e) => setFormData({...formData, cycle: e.target.value})}
+              onChange={(e) => setFormData({ ...formData, cycle: e.target.value })}
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             />
           </div>
-          
+
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">Statut</label>
             <select
               value={formData.statut}
-              onChange={(e) => setFormData({...formData, statut: e.target.value})}
+              onChange={(e) => setFormData({ ...formData, statut: e.target.value })}
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             >
               <option value="actif">Actif</option>
@@ -474,7 +474,7 @@ const Dashboard = () => {
               <option value="inactif">Inactif</option>
             </select>
           </div>
-          
+
           <div className="flex justify-end gap-2 pt-4 sticky bottom-0 bg-white">
             <button
               type="button"
@@ -498,7 +498,7 @@ const Dashboard = () => {
   // Composant pour afficher les utilisateurs
   const UtilisateursTab = () => {
     const filteredUsers = filterAndSortData(data.utilisateurs, 'utilisateurs');
-    
+
     return (
       <div className="space-y-4">
         <FilterBar
@@ -511,7 +511,7 @@ const Dashboard = () => {
           data={data.utilisateurs}
           type="utilisateurs"
         />
-        
+
         {filteredUsers.length === 0 ? (
           <div className="text-center py-8 text-gray-500">
             Aucun utilisateur trouvé
@@ -525,10 +525,9 @@ const Dashboard = () => {
                     <User className="h-5 w-5 text-blue-500" />
                     <h3 className="font-semibold text-gray-800">{user.nom || 'Nom non défini'}</h3>
                   </div>
-                  <span className={`px-2 py-1 rounded text-xs ${
-                    user.statut === 'actif' ? 'bg-green-100 text-green-800' : 
-                    user.statut === 'bloque' ? 'bg-red-100 text-red-800' : 'bg-gray-100 text-gray-800'
-                  }`}>
+                  <span className={`px-2 py-1 rounded text-xs ${user.statut === 'actif' ? 'bg-green-100 text-green-800' :
+                      user.statut === 'bloque' ? 'bg-red-100 text-red-800' : 'bg-gray-100 text-gray-800'
+                    }`}>
                     {user.statut || 'inconnu'}
                   </span>
                 </div>
@@ -538,12 +537,16 @@ const Dashboard = () => {
                     <span className="font-mono">{user.user_id}</span>
                   </div>
                   <div className="flex justify-between">
+                    <span>Date Enregistrement:</span>
+                    <span className="font-mono">{user.date_enregistrement}</span>
+                  </div>
+                  <div className="flex justify-between">
                     <span>Dépôt:</span>
-                    <span className="font-semibold">{formatAmount(user.montant_depot)} €</span>
+                    <span className="font-semibold">{formatAmount(user.montant_depot)} $</span>
                   </div>
                   <div className="flex justify-between">
                     <span>Bénéfice:</span>
-                    <span className="font-semibold text-green-600">{formatAmount(user.benefice_total)} €</span>
+                    <span className="font-semibold text-green-600">{formatAmount(user.benefice_total)} $</span>
                   </div>
                   <div className="flex justify-between">
                     <span>Commissions:</span>
@@ -553,8 +556,16 @@ const Dashboard = () => {
                     <span>Langue:</span>
                     <span className="uppercase">{user.langue || 'N/A'}</span>
                   </div>
+                  <div className="flex justify-between">
+                    <span>Dernière mise à jour:</span>
+                    <span className="font-mono">{user.date_mise_a_jour}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span>Cycles:</span>
+                    <span className="font-mono">{user.cycle}/8</span>
+                  </div>
                 </div>
-                
+
                 <div className="mt-3 flex gap-2">
                   <button
                     onClick={() => {
@@ -566,14 +577,13 @@ const Dashboard = () => {
                     <Edit className="h-4 w-4 mr-1" />
                     Modifier
                   </button>
-                  
+
                   <button
                     onClick={() => handleUpdateUserStatus(user.user_id, user.statut === 'actif' ? 'bloque' : 'actif')}
-                    className={`flex-1 py-2 px-2 rounded transition-colors flex items-center justify-center ${
-                      user.statut === 'actif' 
-                        ? 'bg-red-500 text-white hover:bg-red-600' 
+                    className={`flex-1 py-2 px-2 rounded transition-colors flex items-center justify-center ${user.statut === 'actif'
+                        ? 'bg-red-500 text-white hover:bg-red-600'
                         : 'bg-green-500 text-white hover:bg-green-600'
-                    }`}
+                      }`}
                   >
                     {user.statut === 'actif' ? (
                       <>
@@ -587,7 +597,7 @@ const Dashboard = () => {
                       </>
                     )}
                   </button>
-                  
+
                   <button
                     onClick={() => {
                       setUserToDelete(user);
@@ -609,7 +619,7 @@ const Dashboard = () => {
   // Composant pour afficher les retraits
   const RetraitsTab = () => {
     const filteredRetraits = filterAndSortData(data.retraits, 'retraits');
-    
+
     return (
       <div className="space-y-4">
         <FilterBar
@@ -622,7 +632,7 @@ const Dashboard = () => {
           data={data.retraits}
           type="retraits"
         />
-        
+
         <div className="bg-white rounded-lg shadow">
           <div className="overflow-x-auto">
             <table className="w-full">
@@ -650,7 +660,7 @@ const Dashboard = () => {
                         <div className="text-sm text-gray-500">ID: {retrait.user_id}</div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
-                        <span className="text-sm font-semibold text-red-600">{formatAmount(retrait.montant)} €</span>
+                        <span className="text-sm font-semibold text-red-600">{formatAmount(retrait.montant)} $</span>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
                         <span className="text-sm text-gray-900">{retrait.reseau || 'N/A'}</span>
@@ -677,7 +687,7 @@ const Dashboard = () => {
   // Composant pour afficher les dépôts
   const DepotTab = () => {
     const filteredDepots = filterAndSortData(data.depot, 'depot');
-    
+
     return (
       <div className="space-y-4">
         <FilterBar
@@ -690,368 +700,366 @@ const Dashboard = () => {
           data={data.depot}
           type="depot"
         />
-        
+
         <div className="bg-white rounded-lg shadow">
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead className="bg-gray-50">
-              <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Utilisateur</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Montant</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Réseau</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Adresse</th>
-              </tr>
-            </thead>
-            <tbody className="bg-white divide-y divide-gray-200">
-              {filteredDepots.length === 0 ? (
                 <tr>
-                  <td colSpan="5" className="px-6 py-4 text-center text-gray-500">
-                    Aucun dépôt trouvé
-                  </td>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Utilisateur</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Montant</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Réseau</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Adresse</th>
                 </tr>
-              ) : (
-                filteredDepots.map(depot => (
-                  <tr key={depot.id} className="hover:bg-gray-50">
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm font-medium text-gray-900">{depot.nom || depot.username || 'N/A'}</div>
-                      <div className="text-sm text-gray-500">ID: {depot.user_id}</div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <span className="text-sm font-semibold text-green-600">{formatAmount(depot.montant)} €</span>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <span className="text-sm text-gray-900">{depot.reseau || 'N/A'}</span>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                      {formatDate(depot.date_depot)}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <span className="text-xs font-mono text-gray-500">
-                        {depot.adresse ? `${depot.adresse.substring(0, 20)}...` : 'N/A'}
-                      </span>
+              </thead>
+              <tbody className="bg-white divide-y divide-gray-200">
+                {filteredDepots.length === 0 ? (
+                  <tr>
+                    <td colSpan="5" className="px-6 py-4 text-center text-gray-500">
+                      Aucun dépôt trouvé
                     </td>
                   </tr>
-                ))
-              )}
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-// Composant pour afficher les commissions
-const CommissionsTab = () => {
-  const filteredCommissions = filterAndSortData(data.commissions, 'commissions');
-  
-  return (
-    <div className="space-y-4">
-      <FilterBar
-        searchTerm={searchTerm}
-        onSearchChange={setSearchTerm}
-        sortBy={sortBy}
-        onSortChange={setSortBy}
-        filterBy={filterBy}
-        onFilterChange={setFilterBy}
-        data={data.commissions}
-        type="commissions"
-      />
-      
-      <div className="bg-white rounded-lg shadow">
-        <div className="overflow-x-auto">
-          <table className="w-full">
-            <thead className="bg-gray-50">
-              <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Parrain</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Filleul</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Montant</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Niveau</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
-              </tr>
-            </thead>
-            <tbody className="bg-white divide-y divide-gray-200">
-              {filteredCommissions.length === 0 ? (
-                <tr>
-                  <td colSpan="5" className="px-6 py-4 text-center text-gray-500">
-                    Aucune commission trouvée
-                  </td>
-                </tr>
-              ) : (
-                filteredCommissions.map((commission, index) => (
-                  <tr key={index} className="hover:bg-gray-50">
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm font-medium text-gray-900">{commission.parrain_nom || 'N/A'}</div>
-                      <div className="text-sm text-gray-500">ID: {commission.user_id}</div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm font-medium text-gray-900">{commission.filleul_nom || 'N/A'}</div>
-                      <div className="text-sm text-gray-500">ID: {commission.filleul_id}</div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <span className="text-sm font-semibold text-blue-600">{formatAmount(commission.montant)} €</span>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <span className="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">
-                        Niveau {commission.niveau}
-                      </span>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                      {formatDate(commission.date)}
-                    </td>
-                  </tr>
-                ))
-              )}
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-// Composant pour afficher les statistiques
-const StatsTab = () => {
-  const statCards = [
-    {
-      title: 'Total Utilisateurs',
-      value: stats.totalUsers?.count || 0,
-      icon: Users,
-      color: 'bg-blue-500'
-    },
-    {
-      title: 'Total Dépôts',
-      value: `${formatAmount(stats.totalDeposits?.total || 0)} €`,
-      icon: TrendingUp,
-      color: 'bg-green-500'
-    },
-    {
-      title: 'Total Retraits',
-      value: `${formatAmount(stats.totalWithdrawals?.total || 0)} €`,
-      icon: TrendingDown,
-      color: 'bg-red-500'
-    },
-    {
-      title: 'Total Commissions',
-      value: `${formatAmount(stats.totalCommissions?.total || 0)} €`,
-      icon: Award,
-      color: 'bg-purple-500'
-    }
-  ];
-
-  return (
-    <div className="space-y-6">
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        {statCards.map((card, index) => (
-          <div key={index} className="bg-white p-6 rounded-lg shadow">
-            <div className="flex items-center">
-              <div className={`p-3 rounded-full ${card.color}`}>
-                <card.icon className="h-6 w-6 text-white" />
-              </div>
-              <div className="ml-4">
-                <p className="text-sm font-medium text-gray-500">{card.title}</p>
-                <p className="text-2xl font-semibold text-gray-900">{card.value}</p>
-              </div>
-            </div>
+                ) : (
+                  filteredDepots.map(depot => (
+                    <tr key={depot.id} className="hover:bg-gray-50">
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <div className="text-sm font-medium text-gray-900">{depot.nom || depot.username || 'N/A'}</div>
+                        <div className="text-sm text-gray-500">ID: {depot.user_id}</div>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <span className="text-sm font-semibold text-green-600">{formatAmount(depot.montant)} $</span>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <span className="text-sm text-gray-900">{depot.reseau || 'N/A'}</span>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        {formatDate(depot.date_depot)}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <span className="text-xs font-mono text-gray-500">
+                          {depot.adresse ? `${depot.adresse.substring(0, 20)}...` : 'N/A'}
+                        </span>
+                      </td>
+                    </tr>
+                  ))
+                )}
+              </tbody>
+            </table>
           </div>
-        ))}
+        </div>
       </div>
-      
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="bg-white p-6 rounded-lg shadow">
-          <h3 className="text-lg font-semibold mb-4">Répartition des utilisateurs par statut</h3>
-          <div className="space-y-3">
-            {['actif', 'bloque', 'inactif'].map(status => {
-              const count = data.utilisateurs.filter(u => u.statut === status).length;
-              const percentage = data.utilisateurs.length > 0 ? (count / data.utilisateurs.length * 100).toFixed(1) : 0;
-              
-              return (
-                <div key={status} className="flex items-center justify-between">
-                  <span className="capitalize">{status}</span>
-                  <div className="flex items-center space-x-2">
-                    <div className="w-32 bg-gray-200 rounded-full h-2">
-                      <div 
-                        className={`h-2 rounded-full ${
-                          status === 'actif' ? 'bg-green-500' : 
-                          status === 'bloque' ? 'bg-red-500' : 'bg-gray-500'
-                        }`}
-                        style={{ width: `${percentage}%` }}
-                      ></div>
-                    </div>
-                    <span className="text-sm text-gray-600">{count} ({percentage}%)</span>
-                  </div>
+    );
+  };
+
+  // Composant pour afficher les commissions
+  const CommissionsTab = () => {
+    const filteredCommissions = filterAndSortData(data.commissions, 'commissions');
+
+    return (
+      <div className="space-y-4">
+        <FilterBar
+          searchTerm={searchTerm}
+          onSearchChange={setSearchTerm}
+          sortBy={sortBy}
+          onSortChange={setSortBy}
+          filterBy={filterBy}
+          onFilterChange={setFilterBy}
+          data={data.commissions}
+          type="commissions"
+        />
+
+        <div className="bg-white rounded-lg shadow">
+          <div className="overflow-x-auto">
+            <table className="w-full">
+              <thead className="bg-gray-50">
+                <tr>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Parrain</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Filleul</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Montant</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Niveau</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+                </tr>
+              </thead>
+              <tbody className="bg-white divide-y divide-gray-200">
+                {filteredCommissions.length === 0 ? (
+                  <tr>
+                    <td colSpan="5" className="px-6 py-4 text-center text-gray-500">
+                      Aucune commission trouvée
+                    </td>
+                  </tr>
+                ) : (
+                  filteredCommissions.map((commission, index) => (
+                    <tr key={index} className="hover:bg-gray-50">
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <div className="text-sm font-medium text-gray-900">{commission.parrain_nom || 'N/A'}</div>
+                        <div className="text-sm text-gray-500">ID: {commission.user_id}</div>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <div className="text-sm font-medium text-gray-900">{commission.filleul_nom || 'N/A'}</div>
+                        <div className="text-sm text-gray-500">ID: {commission.filleul_id}</div>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <span className="text-sm font-semibold text-blue-600">{formatAmount(commission.montant)} $</span>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <span className="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">
+                          Niveau {commission.niveau}
+                        </span>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        {formatDate(commission.date)}
+                      </td>
+                    </tr>
+                  ))
+                )}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  // Composant pour afficher les statistiques
+  const StatsTab = () => {
+    const statCards = [
+      {
+        title: 'Total Utilisateurs',
+        value: stats.totalUsers?.count || 0,
+        icon: Users,
+        color: 'bg-blue-500'
+      },
+      {
+        title: 'Total Dépôts',
+        value: `${formatAmount(stats.totalDeposits?.total || 0)} $`,
+        icon: TrendingUp,
+        color: 'bg-green-500'
+      },
+      {
+        title: 'Total Retraits',
+        value: `${formatAmount(stats.totalWithdrawals?.total || 0)} $`,
+        icon: TrendingDown,
+        color: 'bg-red-500'
+      },
+      {
+        title: 'Total Commissions',
+        value: `${formatAmount(stats.totalCommissions?.total || 0)} $`,
+        icon: Award,
+        color: 'bg-purple-500'
+      }
+    ];
+
+    return (
+      <div className="space-y-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          {statCards.map((card, index) => (
+            <div key={index} className="bg-white p-6 rounded-lg shadow">
+              <div className="flex items-center">
+                <div className={`p-3 rounded-full ${card.color}`}>
+                  <card.icon className="h-6 w-6 text-white" />
                 </div>
-              );
-            })}
-          </div>
+                <div className="ml-4">
+                  <p className="text-sm font-medium text-gray-500">{card.title}</p>
+                  <p className="text-2xl font-semibold text-gray-900">{card.value}</p>
+                </div>
+              </div>
+            </div>
+          ))}
         </div>
-        
-        <div className="bg-white p-6 rounded-lg shadow">
-          <h3 className="text-lg font-semibold mb-4">Activité récente</h3>
-          <div className="space-y-3">
-            <div className="flex items-center justify-between py-2 border-b">
-              <span className="text-sm text-gray-600">Nouveaux utilisateurs (30j)</span>
-              <span className="font-semibold">
-                {data.utilisateurs.filter(u => {
-                  const thirtyDaysAgo = new Date();
-                  thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
-                  return new Date(u.date_enregistrement) > thirtyDaysAgo;
-                }).length}
-              </span>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div className="bg-white p-6 rounded-lg shadow">
+            <h3 className="text-lg font-semibold mb-4">Répartition des utilisateurs par statut</h3>
+            <div className="space-y-3">
+              {['actif', 'bloque', 'inconnu'].map(status => {
+                const count = data.utilisateurs.filter(u => u.statut === status).length;
+                const percentage = data.utilisateurs.length > 0 ? (count / data.utilisateurs.length * 100).toFixed(1) : 0;
+
+                return (
+                  <div key={status} className="flex items-center justify-between">
+                    <span className="capitalize">{status}</span>
+                    <div className="flex items-center space-x-2">
+                      <div className="w-32 bg-gray-200 rounded-full h-2">
+                        <div
+                          className={`h-2 rounded-full ${status === 'actif' ? 'bg-green-500' :
+                              status === 'bloque' ? 'bg-red-500' : 'bg-gray-500'
+                            }`}
+                          style={{ width: `${percentage}%` }}
+                        ></div>
+                      </div>
+                      <span className="text-sm text-gray-600">{count} ({percentage}%)</span>
+                    </div>
+                  </div>
+                );
+              })}
             </div>
-            <div className="flex items-center justify-between py-2 border-b">
-              <span className="text-sm text-gray-600">Retraits (7j)</span>
-              <span className="font-semibold">
-                {data.retraits.filter(r => {
-                  const sevenDaysAgo = new Date();
-                  sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
-                  return new Date(r.date_retrait) > sevenDaysAgo;
-                }).length}
-              </span>
-            </div>
-            <div className="flex items-center justify-between py-2">
-              <span className="text-sm text-gray-600">Dépôts (7j)</span>
-              <span className="font-semibold">
-                {data.depot.filter(d => {
-                  const sevenDaysAgo = new Date();
-                  sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
-                  return new Date(d.date_depot) > sevenDaysAgo;
-                }).length}
-              </span>
+          </div>
+
+          <div className="bg-white p-6 rounded-lg shadow">
+            <h3 className="text-lg font-semibold mb-4">Activité récente</h3>
+            <div className="space-y-3">
+              <div className="flex items-center justify-between py-2 border-b">
+                <span className="text-sm text-gray-600">Nouveaux utilisateurs (30j)</span>
+                <span className="font-semibold">
+                  {data.utilisateurs.filter(u => {
+                    const thirtyDaysAgo = new Date();
+                    thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+                    return new Date(u.date_enregistrement) > thirtyDaysAgo;
+                  }).length}
+                </span>
+              </div>
+              <div className="flex items-center justify-between py-2 border-b">
+                <span className="text-sm text-gray-600">Retraits (7j)</span>
+                <span className="font-semibold">
+                  {data.retraits.filter(r => {
+                    const sevenDaysAgo = new Date();
+                    sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+                    return new Date(r.date_retrait) > sevenDaysAgo;
+                  }).length}
+                </span>
+              </div>
+              <div className="flex items-center justify-between py-2">
+                <span className="text-sm text-gray-600">Dépôts (7j)</span>
+                <span className="font-semibold">
+                  {data.depot.filter(d => {
+                    const sevenDaysAgo = new Date();
+                    sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+                    return new Date(d.date_depot) > sevenDaysAgo;
+                  }).length}
+                </span>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-  );
-};
+    );
+  };
 
-// Rendu du composant principal
-const renderActiveTab = () => {
-  switch (activeTab) {
-    case 'utilisateurs':
-      return <UtilisateursTab />;
-    case 'retraits':
-      return <RetraitsTab />;
-    case 'depot':
-      return <DepotTab />;
-    case 'commissions':
-      return <CommissionsTab />;
-    case 'stats':
-      return <StatsTab />;
-    default:
-      return <UtilisateursTab />;
+  // Rendu du composant principal
+  const renderActiveTab = () => {
+    switch (activeTab) {
+      case 'utilisateurs':
+        return <UtilisateursTab />;
+      case 'retraits':
+        return <RetraitsTab />;
+      case 'depot':
+        return <DepotTab />;
+      case 'commissions':
+        return <CommissionsTab />;
+      case 'stats':
+        return <StatsTab />;
+      default:
+        return <UtilisateursTab />;
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-100 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto mb-4"></div>
+          <p className="text-gray-600">Chargement des données...</p>
+        </div>
+      </div>
+    );
   }
-};
 
-if (loading) {
   return (
-    <div className="min-h-screen bg-gray-100 flex items-center justify-center">
-      <div className="text-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto mb-4"></div>
-        <p className="text-gray-600">Chargement des données...</p>
+    <div className="min-h-screen bg-gray-100">
+      {/* Header */}
+      <div className="bg-white shadow-sm">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center py-4">
+            <h1 className="text-2xl font-bold text-gray-900">Dashboard Admin</h1>
+            <button
+              onClick={loadData}
+              className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition-colors"
+            >
+              Actualiser
+            </button>
+          </div>
+        </div>
       </div>
-    </div>
-  );
-}
 
-return (
-  <div className="min-h-screen bg-gray-100">
-    {/* Header */}
-    <div className="bg-white shadow-sm">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center py-4">
-          <h1 className="text-2xl font-bold text-gray-900">Dashboard Admin</h1>
+      {/* Navigation */}
+      <div className="bg-white shadow-sm">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <nav className="flex space-x-8">
+            {tabs.map(tab => (
+              <button
+                key={tab.id}
+                onClick={() => {
+                  setActiveTab(tab.id);
+                  setSearchTerm('');
+                  setSortBy('');
+                  setFilterBy('all');
+                }}
+                className={`flex items-center space-x-2 py-4 px-1 border-b-2 font-medium text-sm ${activeTab === tab.id
+                    ? 'border-blue-500 text-blue-600'
+                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                  }`}
+              >
+                <tab.icon className="h-5 w-5" />
+                <span>{tab.label}</span>
+              </button>
+            ))}
+          </nav>
+        </div>
+      </div>
+
+      {/* Content */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {error && (
+          <ErrorMessage
+            message={error}
+            onRetry={() => {
+              setError(null);
+              loadData();
+            }}
+          />
+        )}
+
+        {renderActiveTab()}
+      </div>
+
+      {/* Modales */}
+      <Modal
+        isOpen={isEditModalOpen}
+        onClose={() => setIsEditModalOpen(false)}
+        title="Modifier l'utilisateur"
+      >
+        <UserEditForm />
+      </Modal>
+
+      <Modal
+        isOpen={isDeleteModalOpen}
+        onClose={() => setIsDeleteModalOpen(false)}
+        title="Confirmer la suppression"
+      >
+        <div className="mb-4">
+          <p className="text-sm text-gray-600">
+            Êtes-vous sûr de vouloir supprimer l'utilisateur <strong>{userToDelete?.nom}</strong> ?
+            Cette action est irréversible.
+          </p>
+        </div>
+        <div className="flex justify-end gap-2">
           <button
-            onClick={loadData}
-            className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition-colors"
+            onClick={() => setIsDeleteModalOpen(false)}
+            className="px-4 py-2 text-gray-600 border border-gray-300 rounded-md hover:bg-gray-50"
           >
-            Actualiser
+            Annuler
+          </button>
+          <button
+            onClick={() => handleDeleteUser(userToDelete.user_id)}
+            className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600"
+          >
+            Supprimer
           </button>
         </div>
-      </div>
+      </Modal>
     </div>
-
-    {/* Navigation */}
-    <div className="bg-white shadow-sm">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <nav className="flex space-x-8">
-          {tabs.map(tab => (
-            <button
-              key={tab.id}
-              onClick={() => {
-                setActiveTab(tab.id);
-                setSearchTerm('');
-                setSortBy('');
-                setFilterBy('all');
-              }}
-              className={`flex items-center space-x-2 py-4 px-1 border-b-2 font-medium text-sm ${
-                activeTab === tab.id
-                  ? 'border-blue-500 text-blue-600'
-                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-              }`}
-            >
-              <tab.icon className="h-5 w-5" />
-              <span>{tab.label}</span>
-            </button>
-          ))}
-        </nav>
-      </div>
-    </div>
-
-    {/* Content */}
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      {error && (
-        <ErrorMessage
-          message={error}
-          onRetry={() => {
-            setError(null);
-            loadData();
-          }}
-        />
-      )}
-      
-      {renderActiveTab()}
-    </div>
-
-    {/* Modales */}
-    <Modal
-      isOpen={isEditModalOpen}
-      onClose={() => setIsEditModalOpen(false)}
-      title="Modifier l'utilisateur"
-    >
-      <UserEditForm />
-    </Modal>
-
-    <Modal
-      isOpen={isDeleteModalOpen}
-      onClose={() => setIsDeleteModalOpen(false)}
-      title="Confirmer la suppression"
-    >
-      <div className="mb-4">
-        <p className="text-sm text-gray-600">
-          Êtes-vous sûr de vouloir supprimer l'utilisateur <strong>{userToDelete?.nom}</strong> ?
-          Cette action est irréversible.
-        </p>
-      </div>
-      <div className="flex justify-end gap-2">
-        <button
-          onClick={() => setIsDeleteModalOpen(false)}
-          className="px-4 py-2 text-gray-600 border border-gray-300 rounded-md hover:bg-gray-50"
-        >
-          Annuler
-        </button>
-        <button
-          onClick={() => handleDeleteUser(userToDelete.user_id)}
-          className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600"
-        >
-          Supprimer
-        </button>
-      </div>
-    </Modal>
-  </div>
-);
+  );
 };
 
 export default Dashboard;
