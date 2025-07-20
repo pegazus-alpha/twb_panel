@@ -392,26 +392,109 @@ const Dashboard = () => {
   return (
     <div className="max-h-96 overflow-y-auto pr-2">
       <form onSubmit={handleSubmit} className="space-y-4">
-        {/* ... Tous les champs précédents restent inchangés ... */}
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Nom</label>
+          <input
+            type="text"
+            value={formData.nom}
+            onChange={(e) => setFormData({ ...formData, nom: e.target.value })}
+            className="w-full px-3 py-2 border border-gray-300 rounded-md"
+          />
+        </div>
 
-        {/* Champ Date d'enregistrement (lecture seule) */}
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Langue</label>
+          <select
+            value={formData.langue}
+            onChange={(e) => setFormData({ ...formData, langue: e.target.value })}
+            className="w-full px-3 py-2 border border-gray-300 rounded-md"
+          >
+            <option value="fr">Français</option>
+            <option value="en">Anglais</option>
+          </select>
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Montant du dépôt</label>
+          <input
+            type="number"
+            value={formData.montant_depot}
+            onChange={(e) => setFormData({ ...formData, montant_depot: e.target.value })}
+            className="w-full px-3 py-2 border border-gray-300 rounded-md"
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Bénéfice total</label>
+          <input
+            type="number"
+            value={formData.benefice_total}
+            onChange={(e) => setFormData({ ...formData, benefice_total: e.target.value })}
+            className="w-full px-3 py-2 border border-gray-300 rounded-md"
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Commissions totales</label>
+          <input
+            type="number"
+            value={formData.commissions_totales}
+            onChange={(e) => setFormData({ ...formData, commissions_totales: e.target.value })}
+            className="w-full px-3 py-2 border border-gray-300 rounded-md"
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Adresse de wallet</label>
+          <input
+            type="text"
+            value={formData.adresse_wallet}
+            onChange={(e) => setFormData({ ...formData, adresse_wallet: e.target.value })}
+            className="w-full px-3 py-2 border border-gray-300 rounded-md"
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Cycle</label>
+          <input
+            type="number"
+            value={formData.cycle}
+            onChange={(e) => setFormData({ ...formData, cycle: e.target.value })}
+            className="w-full px-3 py-2 border border-gray-300 rounded-md"
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Statut</label>
+          <select
+            value={formData.statut}
+            onChange={(e) => setFormData({ ...formData, statut: e.target.value })}
+            className="w-full px-3 py-2 border border-gray-300 rounded-md"
+          >
+            <option value="actif">Actif</option>
+            <option value="inactif">Inactif</option>
+          </select>
+        </div>
+
+        {/* ✅ Champs ajoutés */}
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">Date d'enregistrement</label>
           <input
             type="text"
             value={formData.date_enregistrement}
-            readOnly
+            onChange={(e) => setFormData({ ...formData, date_enregistrement: e.target.value })}
+
             className="w-full px-3 py-2 border border-gray-300 bg-gray-100 rounded-md"
           />
         </div>
 
-        {/* Champ Date de mise à jour (lecture seule) */}
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">Date de mise à jour</label>
           <input
             type="text"
             value={formData.date_mise_a_jour}
-            readOnly
+            onChange={(e) => setFormData({ ...formData, date_mise_a_jour: e.target.value })}
+
             className="w-full px-3 py-2 border border-gray-300 bg-gray-100 rounded-md"
           />
         </div>
@@ -435,6 +518,7 @@ const Dashboard = () => {
     </div>
   );
 };
+
 
   // Composant pour afficher les utilisateurs
   const UtilisateursTab = () => {
