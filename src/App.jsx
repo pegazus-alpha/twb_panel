@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Users, TrendingUp, TrendingDown, DollarSign, Award, User, AlertCircle, Search, Filter, ArrowUpDown, Edit, Trash2, Ban, CheckCircle, X } from 'lucide-react';
 
-const API_BASE_URL = 'http://217.76.57.217:3001/api';
+const API_BASE_URL = 'http://localhost:3001/api';
 
 // Service API avec gestion d'erreurs améliorée
 const apiService = {
@@ -336,41 +336,43 @@ const Dashboard = () => {
   };
 
   const handleUpdateUserStatus = async (userId, newStatus) => {
-    try {
-      await apiService.updateUserStatus(userId, newStatus);
-      setData(prev => ({
-        ...prev,
-        utilisateurs: prev.utilisateurs.map(user =>
-          user.user_id === userId ? { ...user, statut: newStatus } : user
-        )
-      }));
-    } catch (error) {
-      setError('Erreur lors de la mise à jour du statut');
-    }
-  };
+  try {
+    await apiService.updateUserStatus(userId, newStatus);
+    setData(prev => ({
+      ...prev,
+      utilisateurs: prev.utilisateurs.map(user =>
+        user.user_id === userId ? { ...user, statut: newStatus } : user
+      )
+    }));
+  } catch (error) {
+    console.error('Erreur:', error);
+    setError('Erreur lors de la mise à jour du statut');
+  }
+};
 
-  const handleUpdateUser = async (userData) => {
-    try {
-      await apiService.updateUser(editingUser.user_id, userData);
-      setData(prev => ({
-        ...prev,
-        utilisateurs: prev.utilisateurs.map(user =>
-          user.user_id === editingUser.user_id ? { ...user, ...userData } : user
-        )
-      }));
-      setIsEditModalOpen(false);
-      setEditingUser(null);
-    } catch (error) {
-      setError('Erreur lors de la mise à jour de l\'utilisateur');
-    }
-  };
+const handleUpdateUser = async (userData) => {
+  try {
+    await apiService.updateUser(editingUser.user_id, userData);
+    setData(prev => ({
+      ...prev,
+      utilisateurs: prev.utilisateurs.map(user =>
+        user.user_id === editingUser.user_id ? { ...user, ...userData } : user
+      )
+    }));
+    setIsEditModalOpen(false);
+    setEditingUser(null);
+  } catch (error) {
+    console.error('Erreur:', error);
+    setError('Erreur lors de la mise à jour de l\'utilisateur');
+  }
+};
 
-  useEffect(() => {
-    loadData();
-  }, []);
+useEffect(() => {
+  loadData();
+}, []);
 
-  // Formulaire d'édition d'utilisateur
-  const UserEditForm = () => {
+// Formulaire d'édition d'utilisateur
+const UserEditForm = () => {
   const [formData, setFormData] = useState({
     nom: editingUser?.nom || '',
     langue: editingUser?.langue || '',
@@ -476,15 +478,13 @@ const Dashboard = () => {
           </select>
         </div>
 
-        {/* ✅ Champs ajoutés */}
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">Date d'enregistrement</label>
           <input
             type="text"
             value={formData.date_enregistrement}
             onChange={(e) => setFormData({ ...formData, date_enregistrement: e.target.value })}
-
-            className="w-full px-3 py-2 border border-gray-300 bg-gray-100 rounded-md"
+            className="w-full px-3 py-2 border border-gray-300 rounded-md"
           />
         </div>
 
@@ -494,8 +494,7 @@ const Dashboard = () => {
             type="text"
             value={formData.date_mise_a_jour}
             onChange={(e) => setFormData({ ...formData, date_mise_a_jour: e.target.value })}
-
-            className="w-full px-3 py-2 border border-gray-300 bg-gray-100 rounded-md"
+            className="w-full px-3 py-2 border border-gray-300 rounded-md"
           />
         </div>
 
@@ -518,8 +517,6 @@ const Dashboard = () => {
     </div>
   );
 };
-
-
   // Composant pour afficher les utilisateurs
   const UtilisateursTab = () => {
     const filteredUsers = filterAndSortData(data.utilisateurs, 'utilisateurs');
